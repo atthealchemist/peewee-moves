@@ -454,6 +454,19 @@ class Migrator:
         :return: None
         """
         self.migrator.drop_column(table, name, cascade=cascade).run()
+    
+    def alter_column_type(self, table, name, coltype, **kwargs):
+        """
+        Alter column type of the given table.
+
+        :param table: Table name which column will be altered.
+        :param name: Name of the column field to alter.
+        :param coltype: Column type (from FIELD_TO_PEEWEE).
+        :param kwargs: Arguments for the given column type.
+        :return: None
+        """
+        field_class = FIELD_TO_PEEWEE.get(coltype, peewee.CharField)
+        self.migrator.alter_column_type(table, name, field_class(**kwargs)).run()
 
     def rename_column(self, table, old_name, new_name):
         """

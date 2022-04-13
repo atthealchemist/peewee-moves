@@ -84,6 +84,16 @@ def test_not_null(tmpdir):
     manager.migrator.drop_not_null('awesome', 'name')
 
 
+def test_alter_column_type(tmpdir):
+    manager = DatabaseManager('sqlite:///:memory:', directory=tmpdir)
+
+    with manager.migrator.create_table('awesome') as table:
+        table.primary_key('id')
+        table.char('name')
+
+    manager.migrator.alter_column_type('awesome', 'name', 'char', max_length=64, null=True)
+
+
 def test_index(tmpdir):
     manager = DatabaseManager('sqlite:///:memory:', directory=tmpdir)
 
